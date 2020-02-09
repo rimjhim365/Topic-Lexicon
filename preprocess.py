@@ -5,6 +5,7 @@ import re
 from nltk.corpus import stopwords
 stop = stopwords.words('english')
 from nltk.tokenize import RegexpTokenizer
+from textblob import TextBlob
 tokenizer = RegexpTokenizer(r'\w+')
 from nltk.stem.porter import PorterStemmer
 from nltk.stem import WordNetLemmatizer
@@ -16,6 +17,8 @@ def change_alphabet(sent):
 def clean_sent(sent):
 	sent=re.sub(r"http\S+", "", sent.lower()).decode('utf-8')
 	sent=re.sub(r"@\S+", "", sent.lower()).decode('utf-8')
+	sent=TextBlob(sent)
+	sent = sent.correct()
 	#words=sent.split(" ")
 	words=tokenizer.tokenize(sent)
 	words_refined=[lemmatizer.lemmatize(inflection.singularize(word)) for word in words]
